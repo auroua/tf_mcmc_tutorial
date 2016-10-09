@@ -15,9 +15,10 @@ if __name__ == '__main__':
             conjunto_puntos.append([np.random.normal(0.0, 0.9), np.random.normal(0.0, 0.9)])
         else:
             conjunto_puntos.append([np.random.normal(3.0, 0.5), np.random.normal(1.0, 0.5)])
+
     # Display data
-    df = pd.DataFrame({"x": [v[0] for v in conjunto_puntos], "y": [v[1] for v in conjunto_puntos]})
-    sns.lmplot("x", "y", data=df, fit_reg=False, size=6)
+    # df = pd.DataFrame({"x": [v[0] for v in conjunto_puntos], "y": [v[1] for v in conjunto_puntos]})
+    # sns.lmplot("x", "y", data=df, fit_reg=False, size=6)
     # plt.show()
 
     # k-means
@@ -30,11 +31,19 @@ if __name__ == '__main__':
     means = tf.concat(0, [tf.reduce_mean(tf.gather(vectors, tf.reshape(tf.where(tf.equal(assignments, c)), [1, -1])),
                                          reduction_indices=[1]) for c in xrange(k)])
 
+    # step1 = tf.equal(assignments, 0)
+    # step2 = tf.where(step1)
+    # step3 = tf.reshape(step2, [1, -1])
+    # step4 = tf.gather(vectors, step3)
+    # step5 = tf.reduce_mean(step4, reduction_indices=[1])
 
-    update_centroides = tf.assign(centroides, means)
     init_op = tf.initialize_all_variables()
     sess = tf.Session()
     sess.run(init_op)
+    # print sess.run(step3)
+    # print step3.get_shape().as_list()
+
+    update_centroides = tf.assign(centroides, means)
 
 
     for step in xrange(100):
